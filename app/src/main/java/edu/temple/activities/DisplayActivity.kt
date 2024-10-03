@@ -1,5 +1,7 @@
 package edu.temple.activities
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -18,8 +20,28 @@ class DisplayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display)
 
+        textSizeSelectorButton.setOnClickListener{
+            val intent = Intent(this, TextSizeActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_TEXT_SIZE)
+        }
+
+
+
+
         lyricsDisplayTextView = findViewById(R.id.lyricsDisplayTextView)
         textSizeSelectorButton = findViewById(R.id.textSizeSelectorButton)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE_TEXT_SIZE && resultCode == Activity.RESULT_OK){
+            val textSize = data?.getFloatExtra("selectedTextSize", 16f) ?: 16f
+            lyricsDisplayTextView.textSize = textSize
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE_TEXT_SIZE = 1
     }
 }
